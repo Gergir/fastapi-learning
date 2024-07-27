@@ -2,11 +2,11 @@ from fastapi import APIRouter, status, Response
 from enum import Enum
 from typing import Optional
 
-
 router = APIRouter(
     prefix="/users",
     tags=["user"]
 )
+
 
 class UserType(str, Enum):
     admin = "admin"
@@ -38,7 +38,7 @@ def get_all_users(user_count: int = 10, user_type: UserType = UserType.standard_
     response_description="description json2"
 
 )
-def get_user_description(user_id: int, description_id: int, valid = True, username: Optional[str] = None):
+def get_user_description(user_id: int, description_id: int, valid=True, username: Optional[str] = None):
     return {"user_id": user_id}, {"description_id": description_id}, {"valid": valid}, {"username": username}
 
 
@@ -52,7 +52,7 @@ def get_user(user_id: int, response: Response):
     if user_id > 5:
         response.status_code = status.HTTP_404_NOT_FOUND
         return {"error": "404 not found"}
-    response .status_code = status.HTTP_200_OK
+    response.status_code = status.HTTP_200_OK
     return {"message": f"user with {user_id} has been returned"}
 
 # The order is important - first more specific one
