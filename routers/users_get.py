@@ -1,6 +1,8 @@
-from fastapi import APIRouter, status, Response
+from fastapi import APIRouter, status, Response, Depends
 from enum import Enum
 from typing import Optional
+
+from routers.users_post import required_function
 
 router = APIRouter(
     prefix="/users",
@@ -20,14 +22,18 @@ def hello():
 
 
 @router.get("/all")
-def get_all_users(user_count: int = 10, user_type: UserType = UserType.standard_user):
+def get_all_users(
+                user_count: int = 10,
+                user_type: UserType = UserType.standard_user,
+                required_parameter: dict = Depends(required_function)
+):
     """
     Simulates fetching data of all users
 
     - **user_count** optional query parameter
     - **user_type** optional query parameter
     """
-    return {"message": f"fetching {user_count} {user_type.value} users"}
+    return {"message": f"fetching {user_count} {user_type.value} users. Required_param: {required_parameter}"}
 
 
 @router.get(

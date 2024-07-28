@@ -66,3 +66,7 @@ def create_new_post(
         "content": content,
         "post_version": post_version
     }
+
+
+def required_function():
+    return {"message": "required to work"}
