@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import users_get, users_post, user, article
+from routers import users_get, users_post, user, article, product
 from db import models
 from db.database import engine
 from exceptions import StoryException
@@ -7,6 +7,7 @@ from fastapi import Request, status, HTTPException
 from fastapi.responses import JSONResponse, PlainTextResponse
 
 app = FastAPI()
+app.include_router(product.router)
 app.include_router(user.router)
 app.include_router(article.router)
 # app.include_router(users_get.router)
