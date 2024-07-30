@@ -3,7 +3,7 @@ from sqlalchemy.orm.session import Session
 from schemas import UserSchema
 from db.models import DbUser
 from db.hash import Hash
-
+from fastapi import HTTPException, status
 
 def create_user(db: Session, request: UserSchema):
     new_user = DbUser(
@@ -22,11 +22,18 @@ def fetch_users(db: Session):
 
 
 def get_user(db: Session, user_id: int):
-    return db.query(DbUser).where(user_id == DbUser.id).first()
+    user = db.query(DbUser).where(user_id == DbUser.id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"User with id {user_id} not found")
+    return user
 
 
 def update_user(db: Session, user_id: int, request: UserSchema):
-    user = db.query(DbUser).filter(user_id == DbUser.id)
+    user = db.query(DbUser).where(user_id == DbUser.id)
+    if not user.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"User with id {user_id} not found")
     user.update({
         DbUser.username: request.username,
         DbUser.email: request.email,
@@ -37,7 +44,10 @@ def update_user(db: Session, user_id: int, request: UserSchema):
 
 
 def delete_user(db: Session, user_id: id):
-    user = db.query(DbUser).filter(user_id == DbUser.id).first()
+    user = db.query(DbUser).where(user_id == DbUser.id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"User with id {user_id} not found")
     db.delete(user)
     db.commit()
     return f"user with {user_id} deleted"
