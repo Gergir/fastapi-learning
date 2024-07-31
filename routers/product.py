@@ -1,5 +1,5 @@
-from typing import List
-from fastapi import APIRouter, Depends
+from typing import List, Optional
+from fastapi import APIRouter, Depends, Header
 from fastapi.responses import Response, HTMLResponse, PlainTextResponse
 from schemas import ArticleSchema, ArticleDisplay
 from db.database import get_db
@@ -18,6 +18,12 @@ def get_all_products():
         content=data,
         media_type="text/plain"
     )
+
+@router.get("/withheader")
+def get_product(response: Response, custom_header: Optional[List[str]] = Header(None)):
+    response.headers["custom_response_header"] = ", ".join(custom_header)
+    return products
+
 
 @router.get("/{product_id}", responses={
     200: {
