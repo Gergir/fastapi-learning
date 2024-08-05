@@ -15,7 +15,7 @@ app.include_router(product.router)
 app.include_router(user.router)
 app.include_router(article.router)
 app.include_router(file.router)
-# app.include_router(users_get.router)
+app.include_router(users_get.router)
 # app.include_router(users_post.router)
 
 

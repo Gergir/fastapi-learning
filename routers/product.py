@@ -5,6 +5,8 @@ from schemas import ArticleSchema, ArticleDisplay
 from db.database import get_db
 from db import db_article
 from sqlalchemy.orm import Session
+from custom_log import log
+
 
 router = APIRouter(prefix="/product", tags=["product"])
 
@@ -19,6 +21,7 @@ def get_all_products():
         media_type="text/plain"
     )
     response.set_cookie(key="test_cookie", value="test_cookie_value")
+    log("Product", "Get all products")
     return response
 
 
@@ -35,6 +38,7 @@ def get_product(
         "custom_header": custom_header,
         "my_cookie": test_cookie_key
     }
+
 
 @router.post("/new")
 def create_post(name: str = Form(...)):

@@ -1,3 +1,5 @@
+import os
+
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
@@ -8,9 +10,13 @@ from db.database import get_db
 from jose import jwt
 from jose.exceptions import JWTError
 from db import db_user
+from dotenv import load_dotenv
+import os
 oauth2_schema = OAuth2PasswordBearer(tokenUrl='token')
 
-SECRET_KEY = '5e5988bd42cc069423c20e5a2515dcf7acf222e8fd90f336a02a3aaeac696459'  # openssl rand -hex 32
+load_dotenv()
+
+SECRET_KEY = os.environ["AUTH_KEY"]  # openssl rand -hex 32
 ALGORITHM = 'HS256'
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
