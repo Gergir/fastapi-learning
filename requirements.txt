@@ -9,3 +9,4 @@ aiofiles
 python-dotenv
 requests
 pytest
+jinja2

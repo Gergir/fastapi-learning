@@ -1,0 +1,20 @@
+<head>
+    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet" />
+    <title>Product</title>
+</head>
+
+<body>
+    <div class="product">
+        Product ID: {{ product_id }}
+    </div>
+    <div class="product-title">
+        {{ title }}
+    </div>
+    <div class="product-description">
+        {{ description }}
+    </div>
+    <div class="product-price">
+        {{ price }}
+    </div>
+
+</body>

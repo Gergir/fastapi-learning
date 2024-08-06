@@ -6,15 +6,21 @@ from db.database import get_db
 from db import db_article
 from sqlalchemy.orm import Session
 from custom_log import log
-
+import time
 
 router = APIRouter(prefix="/product", tags=["product"])
 
 products = ["banana", "milk", "cross"]
 
 
+async def time_consuming_function():
+    time.sleep(5)
+    return "OK"
+
+
 @router.get("/all")
-def get_all_products():
+async def get_all_products():
+    await time_consuming_function()
     data = " ".join(products)
     response = Response(
         content=data,
