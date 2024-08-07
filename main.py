@@ -9,7 +9,7 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from templates import templates
-
+import time
 
 app = FastAPI()
 app.include_router(templates.router)
@@ -43,6 +43,14 @@ models.Base.metadata.create_all(engine)
 origins = [
     'http://localhost:3000'
 ]
+
+@app.middleware("http")
+async def add_middleware(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    duration = time.time() - start_time
+    response.headers['duration'] = str(duration)
+    return response
 
 app.add_middleware(
     CORSMiddleware,

@@ -1,1 +1,1 @@
-Product: Get all products
+MyAPI: Template for product added with id: 4
