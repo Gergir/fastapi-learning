@@ -9,7 +9,10 @@ from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from templates import templates
+from fastapi.responses import HTMLResponse
 import time
+from client import html
+from fastapi.websockets import WebSocket
 
 app = FastAPI()
 app.include_router(templates.router)
@@ -22,9 +25,9 @@ app.include_router(users_get.router)
 # app.include_router(users_post.router)
 
 
-@app.get("/")
-def welcome():
-    return {"message": "Hello there"}
+# @app.get("/")
+# def welcome():
+#     return {"message": "Hello there"}
 
 
 @app.exception_handler(StoryException)
@@ -51,6 +54,21 @@ async def add_middleware(request: Request, call_next):
     duration = time.time() - start_time
     response.headers['duration'] = str(duration)
     return response
+
+
+@app.get("/")
+async def get():
+    return HTMLResponse(html)
+
+clients = []
+@app.websocket("/chat")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    clients.append(websocket)
+    while True:
+        data = await websocket.receive_text()
+        for client in clients:
+            await client.send_text(data)
 
 app.add_middleware(
     CORSMiddleware,

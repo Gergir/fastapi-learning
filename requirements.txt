@@ -10,3 +10,4 @@ python-dotenv
 requests
 pytest
 jinja2
+websockets
