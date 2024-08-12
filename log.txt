@@ -1,1 +1,3 @@
 MyAPI: Template for product added with id: 4
+API call: wee
+	 http://127.0.0.1:8000/dependencies/new?tag=API%20call&message=wee&separator=rr
